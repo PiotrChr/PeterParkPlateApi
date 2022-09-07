@@ -1,0 +1,26 @@
+version: '3'
+services:
+  server:
+    build: ./docker/server.Dockerfile
+    ports:
+      - '5000:5000'
+    volumes:
+      - .:/www
+    depends_on:
+      - mysql
+    environment:
+      DB_NAME: 'peter_park_plate_db' &db
+      DB_USER: 'ppddb_user' &dbUser
+      DB_PASS: 'ppddb_user_password' &dbPassword
+
+  mysql:
+    image: redis
+    build: ./docker/mysql.Dockerfile
+    restart: always
+    environtment:
+      MYSQL_DATABASE: *db
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: *dbUser
+      MYSQL_PASSWORD: *dbPassword
+    ports:
+      - '3306:3306'
