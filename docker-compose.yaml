@@ -1,26 +1,35 @@
 version: '3'
 services:
   server:
-    build: ./docker/server.Dockerfile
+    container_name: ppp_server
+    build:
+      dockerfile: config/docker/server.Dockerfile
+      context: .
     ports:
-      - '5000:5000'
+      - '5050:5050'
     volumes:
       - .:/www
     depends_on:
-      - mysql
+      - db
+    links:
+      - db
     environment:
-      DB_NAME: 'peter_park_plate_db' &db
-      DB_USER: 'ppddb_user' &dbUser
-      DB_PASS: 'ppddb_user_password' &dbPassword
+      DB_NAME: &db peter_park_plate_db
+      DB_USER: &dbUser ppddb_user
+      DB_PASS: &dbPassword ppddb_user_password
+      DB_HOST: db
 
-  mysql:
-    image: redis
-    build: ./docker/mysql.Dockerfile
+  db:
+    container_name: db
+    image: mysql
     restart: always
-    environtment:
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
       MYSQL_DATABASE: *db
-      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: *dbUser
       MYSQL_PASSWORD: *dbPassword
     ports:
       - '3306:3306'
+    volumes:
+      - ./config/sql:/docker-entrypoint-initdb.d/:ro

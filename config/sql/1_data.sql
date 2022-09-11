@@ -235,7 +235,7 @@ insert into tblLicensePlates (ID, Plate, DateCreated) values (230, 'E-S988', '20
 insert into tblLicensePlates (ID, Plate, DateCreated) values (231, 'DF-R8894', '2022-01-03 19:38:16');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (232, 'B-OD999', '2021-12-26 19:52:49');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (233, 'SB-DJ98', '2022-02-11 14:54:29');
-insert into tblLicensePlates (ID, Plate, DateCreated) values (234, 'E-Y9898', '2022-01-21 15:01:20');
+insert into tblLicensePlates (ID, Plate, DateCreated) values (234, 'E-Z9898', '2022-01-21 15:01:20');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (235, 'ROV-D8977', '2022-07-29 21:19:27');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (236, 'VGT-UE979', '2021-12-07 10:24:57');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (237, 'EG-SC88', '2022-05-13 07:36:06');
@@ -364,7 +364,7 @@ insert into tblLicensePlates (ID, Plate, DateCreated) values (359, 'Z-J8899', '2
 insert into tblLicensePlates (ID, Plate, DateCreated) values (360, 'YQV-X99', '2021-12-30 11:27:39');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (361, 'Z-J9999', '2022-06-30 16:58:42');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (362, 'U-R9', '2021-09-09 13:01:09');
-insert into tblLicensePlates (ID, Plate, DateCreated) values (363, 'K-N8', '2021-12-16 02:48:21');
+insert into tblLicensePlates (ID, Plate, DateCreated) values (363, 'K-N81', '2021-12-16 02:48:21');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (364, 'VDM-SG98', '2022-04-21 03:42:35');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (365, 'BK-N6', '2021-09-21 10:24:21');
 insert into tblLicensePlates (ID, Plate, DateCreated) values (366, 'ZM-IJ9988', '2022-03-12 06:01:06');
