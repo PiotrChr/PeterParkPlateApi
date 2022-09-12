@@ -11,7 +11,6 @@ from src.delivery.mapper.PlateMapper import PlateMapper
 from src.delivery.validation.schema import PostPlateSchema
 from src.delivery.validation.PlateValidator import PlateValidator
 from src.delivery.validation.exception.MalformedPlateFormatException import MalformedPlateFormatException
-from src.infrastructure.exception.DuplicateEntityException import DuplicateEntityException
 
 api = Blueprint('api', __name__)
 
@@ -21,42 +20,54 @@ def index():
     return 'hello', 200
 
 
-@api.route('/plate', methods=['GET', 'POST'])
-@expects_json(PostPlateSchema.schema, ignore_for=['GET'])
+@api.route('/plate', methods=['GET'])
 @inject
-def plate(
+def get_plate(
         plate_service: PlateService = Provide[Container.plate_service],
-        plate_mapper: PlateMapper = Provide[Container.plate_mapper],
+        plate_mapper: PlateMapper = Provide[Container.plate_mapper]
+):
+    plates: Iterator[Plate] = plate_service.get_all()
+    response_data = plate_mapper.map(plates)
+
+    return jsonify(response_data), 200
+
+
+@api.route('/plate', methods=['POST'])
+@expects_json(PostPlateSchema.schema)
+@inject
+def post_plate(
+        plate_service: PlateService = Provide[Container.plate_service],
         plate_validator: PlateValidator = Provide[Container.plate_validator]
 ):
-    if request.method == 'GET':
-        plates: Iterator[Plate] = plate_service.get_all()
-        response_data = plate_mapper.map(plates)
+    plate_number: str = request.json['plate']
+    plate_validator.validate(plate_number)
 
-        return jsonify(response_data), 200
+    new_plate = plate_service.add_plate(plate_number.upper())
 
-    if request.method == 'POST':
-        plate_number: str = request.json['plate']
-        plate_validator.validate(plate_number)
-
-        new_plate = plate_service.add_plate(plate_number)
-
-        return jsonify(new_plate.to_json()), 200
+    return jsonify(new_plate.to_json()), 200
 
 
 @api.route('/search-plate', methods=['GET'])
-def search_plate():
-    return 'hello', 200
+@inject
+def search_plate(
+        plate_service: PlateService = Provide[Container.plate_service],
+        plate_mapper: PlateMapper = Provide[Container.plate_mapper]
+):
+    if not request.args.get('key') or not request.args.get('levenshtein'):
+        raise ValidationError('Missing required: \'key\' or \'levenshtein\' url param')
+
+    key: str = request.args.get('key')
+    levenshtein: int = int(request.args.get('levenshtein')) + 1
+
+    plates: Iterator[Plate] = plate_service.search_plate(key, levenshtein)
+    response_data = plate_mapper.map(plates)
+
+    return jsonify(response_data), 200
 
 
 @api.errorhandler(404)
 def resource_not_found(_):
     return make_response(jsonify({'error': 'Resource not found'}), 404)
-
-
-@api.errorhandler(DuplicateEntityException)
-def plate_exists(_):
-    return make_response(jsonify({'error': 'Plate already exists'}), 409)
 
 
 @api.errorhandler(MalformedPlateFormatException)

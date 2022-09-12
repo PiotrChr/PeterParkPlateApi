@@ -20,3 +20,6 @@ build-all:
 
 shell:
 	docker exec -it ppp_server bash
+
+test:
+	pytest tests/

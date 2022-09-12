@@ -1,3 +1,0 @@
-
-class DuplicateEntityException(Exception):
-    pass

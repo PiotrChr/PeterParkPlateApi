@@ -2,7 +2,6 @@ from typing import Iterator
 
 from src.infrastructure.model.Plate import Plate
 from src.infrastructure.repository.PlateRepository import PlateRepository
-from src.infrastructure.exception.DuplicateEntityException import DuplicateEntityException
 
 
 class PlateService:
@@ -13,7 +12,7 @@ class PlateService:
         return self._repository.get_all()
 
     def add_plate(self, plate_number: str) -> Plate:
-        if self._repository.get_plate_by_number(plate_number):
-            raise DuplicateEntityException
-
         return self._repository.add(plate_number)
+
+    def search_plate(self, key, levenshtein: int):
+        return self._repository.search_plate(key, levenshtein)
