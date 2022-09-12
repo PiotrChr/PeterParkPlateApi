@@ -3,6 +3,7 @@ from dependency_injector.wiring import inject, Provide
 from flask import Blueprint, jsonify, request, make_response
 from flask_expects_json import expects_json
 from jsonschema import ValidationError
+from werkzeug import exceptions
 
 from src.services.PlateService import PlateService
 from src.infrastructure.model.Plate import Plate
@@ -62,7 +63,7 @@ def search_plate(
     plates: Iterator[Plate] = plate_service.search_plate(key, levenshtein)
     response_data = plate_mapper.map(plates)
 
-    return jsonify(response_data), 200
+    return jsonify({key: response_data}), 200
 
 
 @api.errorhandler(404)
@@ -75,6 +76,7 @@ def malformed_plate_number(_):
     return make_response(jsonify({'error': 'Wrong plate format'}), 422)
 
 
-@api.errorhandler(ValidationError)
+@api.errorhandler(exceptions.BadRequest)
 def bad_request(error):
-    return make_response(jsonify({'error': error.description.message}), 400)
+    description = 'Bad Request' if isinstance(error.description, str) else error.description.message
+    return make_response(jsonify({'error': description}), 400)

@@ -22,4 +22,4 @@ shell:
 	docker exec -it ppp_server bash
 
 test:
-	pytest tests/
+	docker run -it --rm --env-file config/.env.test $$(docker build -f config/docker/server.Dockerfile -q --target test .)

@@ -12,8 +12,10 @@ class Plate(Base):
     plate = Column('Plate', String(10))
     dateCreated = Column('DateCreated', DateTime, server_default=func.now())
 
-    def __init__(self, plate):
+    def __init__(self, plate, date_created=None, _id=None):
         self.plate = plate
+        self.id = _id
+        self.dateCreated = date_created
 
     def __repr__(self) -> str:
         return f"Plate(id={self.id!r}, plate={self.plate!r}, dateCreated={self.dateCreated!r})"

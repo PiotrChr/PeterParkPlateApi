@@ -3,7 +3,6 @@ from typing import Callable, Iterator
 from sqlalchemy.orm import Session
 from sqlalchemy import text, select, desc
 
-
 from src.infrastructure.model.Plate import Plate
 
 
@@ -14,10 +13,6 @@ class PlateRepository:
     def get_all(self) -> Iterator[Plate]:
         with self.session_factory() as session:
             return session.query(Plate).order_by(desc(Plate.dateCreated)).all()
-
-    def get_plate_by_number(self, plate_number: str):
-        with self.session_factory() as session:
-            return session.query(Plate).filter_by(plate=plate_number).first()
 
     def add(self, plate_number: str) -> Plate:
         with self.session_factory() as session:
@@ -43,8 +38,4 @@ class PlateRepository:
                 params={'key': key, 'lval': levenshtein}
             ).all()
 
-            result = map(lambda val: val[0], result)
-
-            print(result)
-
-            return result
+            return map(lambda val: val[0], result)

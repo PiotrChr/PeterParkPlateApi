@@ -1,7 +1,6 @@
 from flask import Flask
 from src.di.Container import Container
 from src.delivery.api import api
-# import pymysql
 
 
 def create_app() -> Flask:
