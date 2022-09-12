@@ -10,7 +10,7 @@ Please look for more usage in the **Makefile**
 
 ## API
 
-API running on **127.0.0.1:5050**
+The API is running on **127.0.0.1:5050**
 
 Endpoints:
 - **[GET] /plate** - Returns complete list of registered plates
